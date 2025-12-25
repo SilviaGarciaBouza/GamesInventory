@@ -53,4 +53,4 @@ Se ha implementado una capa de seguridad mediante **Secrets Gradle Plugin**:
 
 ##
 AUTORA: Silvia García Bouza
-![img.png](img.png)
+<img width="595" height="1264" alt="image" src="https://github.com/user-attachments/assets/e054b9fe-92c3-4162-bdb8-1e7c53f9ab35" />
