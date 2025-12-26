@@ -1,5 +1,6 @@
 package com.github.gameinventory.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -10,6 +11,7 @@ import com.github.gameinventory.GestionGamesApplication
 import com.github.gameinventory.data.GameRepository
 import com.github.gameinventory.data.RepositoryResult
 import com.github.gameinventory.data.local.Game
+import com.github.gameinventory.sensor.SensorCoordinator
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -19,6 +21,26 @@ class GameViewModel(private val gameRepository: GameRepository) : ViewModel() {
     // Canal para enviar eventos de un solo uso (mensajes Toast/Snackbar) a la UI
     private val _events = Channel<String>()
     val events = _events.receiveAsFlow()
+    // SENSOR1/3
+    private var sensorCoordinator: SensorCoordinator? = null
+    /**
+    SENSOR2/3
+     */
+    fun setupSensor(context: Context) {
+        if (sensorCoordinator == null) {
+            sensorCoordinator = SensorCoordinator(context, this)
+            sensorCoordinator?.start()
+        }
+    }
+
+    /**
+     SENSOR3/3
+     */
+    override fun onCleared() {
+        super.onCleared()
+        sensorCoordinator?.close()
+        sensorCoordinator = null
+    }
 
     // Estado reactivo de la lista de juegos, se actualiza solo cuando hay cambios en Room
     val games: StateFlow<List<Game>> = gameRepository.getAllGamerStream()

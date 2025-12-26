@@ -19,12 +19,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.gameinventory.data.local.Game
 import com.github.gameinventory.ui.components.GameCard
+import com.github.gameinventory.viewmodel.GameViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,11 +39,18 @@ fun GameListScreen(
     onDeleteGame: (Game) -> Unit,
     onSync: () -> Unit,
     onDownloadSteam: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    //SENSOR1/3
+    viewModel: GameViewModel = viewModel(factory = GameViewModel.Factory)
 ) {
     val deepBlack = Color(0xFF121212)
     val gamerRed = Color(0xFFD32F2F)
-
+    //SENSOR2/3
+    val context = LocalContext.current
+    //SENSOR3/3
+    LaunchedEffect(Unit) {
+        viewModel.setupSensor(context)
+    }
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = deepBlack,
